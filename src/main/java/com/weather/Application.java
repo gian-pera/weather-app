@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -21,7 +22,19 @@ import org.springframework.web.client.RestTemplate;
 public class Application extends SpringBootServletInitializer {
 	
 	/**
-	 * Constructs a {@link MappingJackson2HttpMessageConverter} to be used by the application.
+	 * Constructs an {@link HttpHeaders} object to be used by the application.
+	 * @return the constructed {@link HttpHeaders}.
+	 */
+	@Bean
+	public HttpHeaders httpHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		return headers;
+	}
+	
+	/**
+	 * Constructs a {@link MappingJackson2HttpMessageConverter} object to be used by the application.
 	 * @return the constructed {@link MappingJackson2HttpMessageConverter}.
 	 */
 	@Bean
@@ -34,7 +47,7 @@ public class Application extends SpringBootServletInitializer {
 	}
 	
 	/**
-	 * Constructs a {@link RestTemplate} to be used by the application.
+	 * Constructs a {@link RestTemplate} object to be used by the application.
 	 * @return the constructed {@link RestTemplate}.
 	 */
 	@Bean

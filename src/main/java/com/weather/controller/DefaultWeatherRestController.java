@@ -1,52 +1,58 @@
 package com.weather.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.weather.model.WeatherLog;
+import com.weather.service.WeatherService;
 
 /**
  * Default implementation of {@link WeatherRestController}.
  */
 @RestController
-@RequestMapping("/rest/1")
+@RequestMapping("/rest/1/weather")
 public class DefaultWeatherRestController implements WeatherRestController {
+	
+	@Autowired
+	private WeatherService weatherService;
+	
+	@Autowired
+	private HttpHeaders httpHeaders;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@RequestMapping(value = "/current", method = RequestMethod.GET, 
+	@RequestMapping(value = "/{location}", method = RequestMethod.GET, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getWeather(String weather) {
-	
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy kk:mm");	
+	public ResponseEntity<WeatherLog> getWeather(@PathVariable String location) {
 		
-		Map<String, String> response = new HashMap<String, String>();
-		response.put("currentTime", formatter.format(Calendar.getInstance().getTime()));
+		WeatherLog weather = weatherService.getWeather(location);
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpStatus status = HttpStatus.OK;
+		if (Objects.isNull(weather)) {
+			status = HttpStatus.NOT_FOUND;
+		}
 		
-		return new ResponseEntity<Map<String, String>>(response, headers, HttpStatus.OK);
+		return new ResponseEntity<WeatherLog>(weather, httpHeaders, status);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@RequestMapping(value = "/history", method = RequestMethod.GET, 
+	@RequestMapping(value = "/recent", method = RequestMethod.GET, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getRecentRequests() {
-		// TODO Auto-generated method stub
+	public ResponseEntity<List<WeatherLog>> getRecentRequests() {
+		// TODO get recent data from service
 		return null;
 	}
-
 }

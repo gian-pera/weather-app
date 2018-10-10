@@ -1,16 +1,16 @@
 package com.weather.orm;
 
-import com.weather.model.Weather;
+import com.weather.model.WeatherLogDTO;
 
 /**
- * Provides ORM capabilities to connect to the weather the datasource. 
+ * Provides ORM capabilities to connect to the open weather the datasource. 
  */
 public interface WeatherORM {
 	
 	/**
-	 * Retrieves the current {@link Weather} of a city.
-	 * @param location the city to retrieve the {@link Weather} from
-	 * @return current {@link Weather} of the city.
+	 * Requests a {@link WeatherLogDTO} of a city.
+	 * @param location the city to retrieve the {@link WeatherLogDTO} from.
+	 * @return the current {@link WeatherLogDTO} of the city.
 	 */
-	Weather getWeather(String location);
+	WeatherLogDTO requestWeather(String location);
 }

@@ -9,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,36 +25,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "WeatherLog")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Weather implements Serializable {
+public class WeatherLog implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonProperty
 	private long id;
-	
-	@Column
-	@NotBlank
+
+	@Column(unique = true)
+	@GeneratedValue(generator = "guid")
+	@GenericGenerator(name = "guid", strategy = "guid")
 	@JsonProperty
 	private String responseId;
 
-	@Column
+	@Column(nullable = false)
 	@NotBlank
 	@JsonProperty
 	private String location;
 
-	@Column
+	@Column(nullable = false)
 	@NotBlank
 	@JsonProperty
 	private String actualWeather;
 
-	@Column
+	@Column(nullable = false)
 	@NotBlank
 	@JsonProperty
 	private String temperature;
 
 	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	@JsonProperty
 	private Date timestamp;
+	
+	public WeatherLog() {
+		this("", "", "");
+	}
+	
+	public WeatherLog(String location, String actualWeather, String temperature) {
+		this.location = location;
+		this.actualWeather = actualWeather;
+		this.temperature = temperature;
+	}
 
 	public long getId() {
 		return id;

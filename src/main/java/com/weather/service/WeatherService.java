@@ -1,17 +1,24 @@
 package com.weather.service;
 
-import com.weather.model.Weather;
+import java.util.List;
+
+import com.weather.model.WeatherLog;
 
 /**
- * Provides logic for processing {@link Weather} objects.
+ * Provides logic for processing {@link WeatherLog} objects.
  */
 public interface WeatherService {
 
 	/**
-	 * Retrieves the current {@link Weather} of a city.
-	 * @param location the city to retrieve the {@link Weather} from
-	 * @return current {@link Weather} of the city.
+	 * Retrieves the current {@link WeatherLog} of a city.
+	 * @param location the city to retrieve the {@link WeatherLog} from
+	 * @return current {@link WeatherLog} of the city.
 	 */
-	Weather getWeather(String location);
+	WeatherLog getWeather(String location);
 	
+	/**
+	 * Retrieves a list of recently requested {@link WeatherLog} data.
+	 * @return the list of recently requested {@link WeatherLog} data.
+	 */
+	List<WeatherLog> getRecentRequests();
 }
